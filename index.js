@@ -18,10 +18,6 @@ const options = {
   baseUrl: '/api'
 }
 
-router.use((req, res, next) => {
-  console.log(req, req.url);
-  next()
-})
 
 app.use(express.static('public', options))
 app.use(user);
