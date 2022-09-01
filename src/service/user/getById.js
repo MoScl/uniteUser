@@ -1,4 +1,5 @@
 const table = require('./index.json');
+
 function getById(event, req, res) {
   if(!event?.id) return { code: 400, data:null, msg: '参数缺失' };
   let data;

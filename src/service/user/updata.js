@@ -7,13 +7,13 @@ const row  = {
   password: null
 }
 
-async function save(event, req, res) {
-  const data = _.pick(event, ['name', 'username', 'password']);
+async function updata(event, req, res) {
+  const data = _.pick(event, ['id','name', 'username', 'password']);
   if (!event) {
     return { code: 400, data: null, msg: '参数错误' }
   } else if (typeof event === 'object') {
     // 必填参数校验
-    const required = ['name', 'username', 'password']
+    const required = ['id','name', 'username', 'password']
     let msg = '';
     required.forEach(v => {
       if (!data[v]) {
@@ -34,17 +34,18 @@ async function save(event, req, res) {
     }
     
   }
+  const updataList = []
 
-  // 添加用户
-  table.push({ id: new Date().getTime(), ...data });
+  // 更新用户
+   _.cloneDeep(table).forEach(v => (updataList.push(v.id === data.id ? data : v)));
   
   // 保存数据
   try {
-    await fs.writeFileSync('./src/service/user/index.json', JSON.stringify(table));
+    await fs.writeFileSync('./src/service/user/index.json', JSON.stringify(updataList));
   }catch(err){
     return { code: 400, data: {}, msg: '保存失败'};
   }
-  return { code: 200, data, msg: '保存成功'};
+  return { code: 200, data, msg: '修改成功'};
 };
 
-module.exports = save;
+module.exports = updata;
