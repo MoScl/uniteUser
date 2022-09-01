@@ -1,29 +1,18 @@
-const express = require('express');
-const user = require('./user');
-const app = express();
-const router = express.Router()
-const config = {
-  baseUrl: '/api'
-};
-const options = {
-  dotfiles: 'ignore',
-  etag: false,
-  extensions: ['htm', 'html'],
-  index: false,
-  maxAge: '1d',
-  redirect: false,
-  setHeaders (res, path, stat) {
-    res.set('x-timestamp', Date.now())
-  },
-  baseUrl: '/api'
-}
+const { Server } = require('./server');
+
+const server = new Server();
+
+// 用户
+server.get('/user/getById', require('./src/service/user/getById'));
+server.post('/user/save', require('./src/service/user/save'));
+// server.post('/user/updata', );
+// server.post('/user/list', );
+// server.post('/user/listPage', );
+// server.post('/user/delete', );
+// server.post('/user/deleteBatch', );
 
 
-app.use(express.static('public', options))
-app.use(user);
-
-
-app.listen(9605, () => {
+server.listen(9605, () => {
   console.log('http://localhost:9605');
 });
 

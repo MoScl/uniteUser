@@ -1,5 +1,5 @@
 {
-  "name": "uniteUser",
+  "name": "uniteuser",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-multiparty": "^2.2.0",
     "express": "^5.0.0-beta.1"
   }
 }
