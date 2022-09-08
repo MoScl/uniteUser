@@ -1,14 +1,14 @@
 const fs = require('fs');
 const _ = require('lodash')
 
-async function save(event, req, res) {
-  const table = require('./index.json');
-  const data = _.pick(event, ['name', 'username', 'password']);
+async function login(event, req, res) {
+  const table = require('../user/index.json');
+  const data = _.pick(event, ['username', 'password']);
   if (!event) {
     return { code: 400, data: null, msg: '参数错误' }
   } else if (typeof event === 'object') {
     // 必填参数校验
-    const required = ['name', 'username', 'password']
+    const required = ['username', 'password'];
     let msg = '';
     required.forEach(v => {
       if (!data[v]) {
@@ -21,25 +21,28 @@ async function save(event, req, res) {
     return { code: 400, data: null, msg: '参数错误' }
   }
 
+  let user = null;
+  
   for (let i = 0; i < table.length; i++) {
     const v = table[i];
     // 用户名是否重复
     if (v.username === event.username) {
-      return { code: 400, data: null, msg: '用户名重复！'};
+      if (v.password !== event.password) {
+        return { code: 400, data: {}, msg: '用户名或密码错误'};
+      }
+      user = v
     }
-    
   }
 
-  // 添加用户
-  table.push({ id: new Date() + table.length.getTime(), ...data });
-  
-  // 保存数据
-  try {
-    await fs.writeFileSync('./src/service/user/index.json', JSON.stringify(table));
-  }catch(err){
-    return { code: 400, data: {}, msg: '保存失败'};
+  if (!user) {
+    return { code: 401, data: {}, msg: '暂无用户'};
   }
-  return { code: 200, data, msg: '保存成功'};
+  // 数据
+  try {
+    return { code: 200, data: user, msg: '登录成功'};
+  }catch(err){
+    return { code: 400, data: {}, msg: '登录失败'};
+  }
 };
 
-module.exports.save = save;
+module.exports = login;

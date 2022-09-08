@@ -1,13 +1,8 @@
-const table = require('./index.json');
 const fs = require('fs');
 const _ = require('lodash')
-const row  = {
-  name: null,
-  username: null,
-  password: null
-}
 
 async function updata(event, req, res) {
+  const table = require('./index.json');
   const data = _.pick(event, ['id','name', 'username', 'password']);
   if (!event) {
     return { code: 400, data: null, msg: '参数错误' }
@@ -48,4 +43,4 @@ async function updata(event, req, res) {
   return { code: 200, data, msg: '修改成功'};
 };
 
-module.exports = updata;
+module.exports.updata = updata;
