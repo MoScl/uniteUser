@@ -31,7 +31,7 @@ async function save(event, req, res) {
   }
 
   // 添加用户
-  table.push({ id: new Date() + table.length.getTime(), ...data });
+  table.push({ id: new Date().getTime() + table.length, ...data });
   
   // 保存数据
   try {

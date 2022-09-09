@@ -10,10 +10,12 @@ const requestLimit = '5120kb';
 // 临时 IP 黑名单
 const tempBlackIpList = [];
 
+process.env.BASE_URL = '/api'
+
 class Server {
   constructor() {
     this.server = express();
-    this.baseUrl = '/api';
+    this.baseUrl = process.env.BASE_URL;
     // 解析json数据格式
     this.server.use(bodyParser.urlencoded({ extended: false, limit: requestLimit }));
     this.server.use(bodyParser.json({ limit: requestLimit }));
