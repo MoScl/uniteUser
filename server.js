@@ -39,7 +39,15 @@ class Server {
     });
     this.server.use(function(req, res, next) {
       console.log(req.method, req.url);
-      next();
+      if (!req.headers.token) {
+        res.send({
+          code: 401,
+          message: '未登录',
+          data: null,
+        })
+      } else {
+        next();
+      }
     });
   }
 
